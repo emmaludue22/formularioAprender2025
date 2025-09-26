@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Preinscripción – Operativo Aprender 2025</title>
+  <style>
+    :root{
+      --ok:#2e7d32; --err:#c62828; --bg:#f9f9f9; --bd:#d8d8d8; --ink:#333; --muted:#666;
+      --radius:12px;
+      --pad: clamp(14px, 2.5vw, 22px);
+      --gap: clamp(10px, 2vw, 16px);
+      --fs-base: clamp(14px, 1.9vw, 16px);
+      --fs-h3: clamp(16px, 2.6vw, 18px);
+      --fs-small: clamp(12px, 1.6vw, 13px);
+      --sticky-gap: clamp(8px, 2.2vw, 12px);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin:0; background:var(--bg); color:var(--ink); font-size:var(--fs-base);
+    }
+
+    /* ====== HEADER con fondo #EBEBEB ====== */
+    .header-hero{
+      background:#EBEBEB; border-bottom:1px solid #ddd; position:relative; isolation:isolate;
+    }
+    .hero-inner{
+      max-width: 1100px; margin: 0 auto;
+      padding: clamp(14px, 3vw, 24px);
+      display:flex; flex-direction:column; align-items:center; gap: clamp(8px, 2vw, 14px);
+    }
+    .logo-row{ display:flex; align-items:center; justify-content:center; gap: clamp(10px, 2.4vw, 24px); flex-wrap: wrap; }
+    .logo-img{ height: clamp(40px, 7vw, 68px); width:auto; object-fit:contain; filter: drop-shadow(0 1px 0 rgba(0,0,0,0.04)); }
+    .hero-title{ font-weight: 800; letter-spacing:.2px; text-align:center; font-size: clamp(16px, 2.4vw, 22px); color:#222; }
+    .hero-sub{ text-align:center; color:#555; font-size:var(--fs-small); margin-top:-6px; }
+
+    /* ====== CONTENIDO ====== */
+    .container{ max-width: 960px; margin: 0 auto; padding: var(--pad); }
+    .card{
+      background:#fff; border:1px solid var(--bd); border-radius:var(--radius);
+      box-shadow: 0 6px 18px rgba(0,0,0,.06); padding: var(--pad);
+    }
+    h3{ font-size:var(--fs-h3); margin: 16px 0 8px; }
+    p{ line-height:1.45; color:#444; margin: 0 0 10px; }
+    .muted{ color:var(--muted); }
+    .grid{ display:grid; gap: var(--gap); grid-template-columns: 1fr; }
+    @media (min-width: 720px){ .grid{ grid-template-columns: 1fr 1fr; } }
+    .form-group{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    label{ font-weight:600; color:#444; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .status{ min-width:20px; text-align:right; font-size:14px; line-height:1 }
+    input[type="text"], input[type="email"], input[type="file"], select{
+      width:100%; padding:12px 12px; border:1px solid var(--bd); border-radius:10px; background:#fff;
+    }
+    input:focus, select:focus{ outline:none; border-color:#4CAF50; box-shadow:0 0 0 4px rgba(76,175,80,.12); }
+    input.valid{ border-color:var(--ok); }
+    input.invalid{ border-color:var(--err); }
+    .msg{ font-size:var(--fs-small); min-height:1em; }
+    .msg.ok{ color:var(--ok); }
+    .msg.err{ color:var(--err); }
+    select{ height: 140px; } @media (min-width:720px){ select{ height: 180px; } }
+    .hint{ color:var(--muted); font-size:var(--fs-small); }
+    .actions{
+      position: sticky; bottom: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff 40%);
+      padding-top: var(--sticky-gap); margin-top: calc(var(--sticky-gap) * 1.5);
+    }
+    .btn{
+      width:100%; padding:14px 16px; border:0; border-radius:12px;
+      background:#4CAF50; color:#fff; font-weight:800; letter-spacing:.2px; cursor:pointer;
+    }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+    details{ border:1px dashed var(--bd); border-radius:10px; padding:10px 12px; background:#fcfcfc; }
+    details>summary{ cursor:pointer; font-weight:700; list-style:none; }
+    details>summary::-webkit-details-marker{ display:none; }
+    details[open]{ background:#fff; }
+    @media (min-width:720px){ details{ border-style:solid; } details>summary{ cursor:default; } }
+    .radios{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+    .radios label{ font-weight:500; gap:6px; }
+    .radios input{ transform: scale(1.2); margin-right:6px; }
+    .hidden{ display:none !important; }
+
+    /* ===== Modal de confirmación ===== */
+    .modal-backdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,.5);
+      display:flex; align-items:center; justify-content:center;
+      padding: var(--pad); z-index:50;
+    }
+    .modal{
+      width:100%; max-width:560px; background:#fff;
+      border-radius: var(--radius); border:1px solid var(--bd);
+      box-shadow: 0 12px 32px rgba(0,0,0,.18); padding: var(--pad);
+      text-align:left;
+    }
+    .modal h3{ margin:0 0 8px; text-align:left; }
+    .modal p{ margin: 6px 0 16px; }
+    .modal .modal-actions{ display:flex; justify-content:flex-end; gap:8px; }
+    .modal .btn{ width:auto; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header-hero">
+    <div class="hero-inner">
+      <div class="logo-row">
+        <!-- Usando el enlace que ya te funciona -->
+        <img class="logo-img" alt="Logos Operativo Aprender"
+             src="https://raw.githubusercontent.com/emmaludue22/formularioAprender2025/refs/heads/main/logos.png">
+      </div>
+      <div class="hero-title">Operativo Aprender 2025 – Preinscripción de Aplicadores/as</div>
+      <div class="hero-sub">Secretaría de Planeamiento Educativo · Dirección de Evaluación</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <!-- (Quitamos el H2 para evitar título duplicado) -->
+
+      <details class="muted" open>
+        <summary>Información general</summary>
+        <p>La Dirección Provincial de Desarrollo Profesional y Evaluación Educativa invita a docentes de nivel primario a preinscribirse como aplicadores/as para el Operativo Aprender 2025 (12 de noviembre de 2025). Se evaluará a estudiantes de 6º grado en toda la provincia.</p>
+        <p>Este formulario solicita información personal y laboral para organizar el operativo y gestionar el pago correspondiente.</p>
+      </details>
+
+      <form id="miFormulario" novalidate>
+        <!-- Datos personales -->
+        <h3>Datos personales</h3>
+        <div class="grid">
+          <div class="form-group">
+            <label for="nombre">Nombre <span id="st-nombre" class="status"></span></label>
+            <input id="nombre" name="nombre" type="text" required autocomplete="given-name" aria-describedby="msg-nombre">
+            <div id="msg-nombre" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="apellido">Apellido <span id="st-apellido" class="status"></span></label>
+            <input id="apellido" name="apellido" type="text" required autocomplete="family-name" aria-describedby="msg-apellido">
+            <div id="msg-apellido" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="dni">DNI <span id="st-dni" class="status"></span></label>
+            <input id="dni" name="dni" type="text" required inputmode="numeric" maxlength="8" aria-describedby="msg-dni">
+            <div id="msg-dni" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="correo">Correo <span id="st-correo" class="status"></span></label>
+            <input id="correo" name="correo" type="email" required autocomplete="email" aria-describedby="msg-correo">
+            <div id="msg-correo" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono <span id="st-telefono" class="status"></span></label>
+            <input id="telefono" name="telefono" type="text" required inputmode="numeric" maxlength="10" placeholder="Ej.: 3831234567" aria-describedby="msg-telefono">
+            <div id="msg-telefono" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label>¿Cumple funciones frente al aula? <span id="st-cumple" class="status"></span></label>
+            <div class="radios" aria-describedby="msg-cumple">
+              <label for="cumple-si"><input type="radio" id="cumple-si" name="cumple" value="Si" required>Sí</label>
+              <label for="cumple-no"><input type="radio" id="cumple-no" name="cumple" value="No" required>No</label>
+            </div>
+            <div id="msg-cumple" class="msg"></div>
+          </div>
+        </div>
+
+        <!-- Escuelas -->
+        <h3>Escuelas</h3>
+        <div class="grid">
+          <!-- Se muestra solo si "Sí" -->
+          <div class="form-group hidden" id="grupoEscuelaActual">
+            <label for="buscarEscuelaActual">Escuela donde trabaja actualmente</label>
+            <div class="hint">Seleccione una sola opción</div>
+            <input id="buscarEscuelaActual" placeholder="Escriba escuela, localidad o departamento">
+            <select id="listaEscuelasActual" size="6"></select>
+            <div class="hint">Al seleccionar, el nombre se coloca en el campo de búsqueda.</div>
+          </div>
+
+          <div class="form-group" id="grupoEscuelaPost">
+            <label for="buscarEscuelaPost">Escuelas que participarán del Operativo</label>
+            <div class="hint">Seleccione la escuela a la que desea postularse como aplicador</div>
+            <input id="buscarEscuelaPost" placeholder="Escriba escuela, localidad o departamento">
+            <select id="listaEscuelasPost" size="6"></select>
+          </div>
+        </div>
+
+        <!-- Pago -->
+        <h3>Datos Administrativos</h3>
+        <div class="hint">Los datos se solicitan a todos los inscriptos para simplificar la gestión administrativa del pago en caso de resultar seleccionados.</div>
+        <br>
+        <div class="grid">
+          <div class="form-group">
+            <label for="cuil">CUIL <span id="st-cuil" class="status"></span></label>
+            <input id="cuil" name="cuil" type="text" required inputmode="numeric" maxlength="11" aria-describedby="msg-cuil">
+            <div id="msg-cuil" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="cbu">CBU <span id="st-cbu" class="status"></span></label>
+            <input id="cbu" name="cbu" type="text" required inputmode="numeric" maxlength="22" aria-describedby="msg-cbu">
+            <div id="msg-cbu" class="msg"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="fileDNI">Fotocopia del DNI</label>
+            <input id="fileDNI" name="fileDNI" type="file" accept="image/*,application/pdf" required>
+            <div class="hint">(asegurarse de que se vea claramente el nombre completo y el número de documento)</div>
+          </div>
+
+          <div class="form-group">
+            <label for="fileCuil">Constancia de CUIL</label>
+            <input id="fileCuil" name="fileCuil" type="file" accept="image/*,application/pdf" required>
+            <div class="hint">
+              (<a href="https://servicioswww.anses.gob.ar/C2-ConstaCUIL" target="_blank" rel="noopener noreferrer">Link a ANSES</a>)
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fileCbu">Constancia de CBU</label>
+            <input id="fileCbu" name="fileCbu" type="file" accept="image/*,application/pdf" required>
+            <div class="hint">(No se aceptan cuentas de billeteras virtuales, solo cuentas bancarias tradicionales y en pesos)</div>
+          </div>
+        </div>
+
+        <!-- CTA sticky -->
+        <div class="actions">
+          <button id="btnEnviar" type="button" class="btn" disabled>Enviar formulario</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- ===== Modal de confirmación ===== -->
+  <div id="modalConfirm" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Solicitud de Preinscripción recibida</h3>
+      <p>Se deja constancia de que completar este formulario no garantiza la asignación automática del rol, ya que la selección final estará sujeta a criterios definidos por la organización del operativo.
+      Agradecemos profundamente su compromiso con la mejora de la calidad educativa en nuestra provincia.</p>
+      <div class="modal-actions">
+        <button id="modalClose" class="btn" type="button">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    //=====================
+    // Utilidades + Validación
+    //=====================
+    const $ = (id)=>document.getElementById(id);
+    const LETTERS_RGX = /[A-Za-zÁÉÍÓÚÑÜáéíóúñü]/g;
+
+    const sanitize = {
+      onlyDigits: s => (s||'').replace(/\D+/g,''),
+      noDigits:   s => (s||'').replace(/\d+/g,''),
+      trim:       s => String(s||'').trim()
+    };
+    const result = (ok, msgOk="✓", msgErr="") => ({ok, msg: ok? msgOk : msgErr});
+
+    function setValidity(inputEl, res, fieldId){
+      const statusEl = $(`st-${fieldId}`);
+      const msgEl = $(`msg-${fieldId}`);
+      if (inputEl){
+        inputEl.classList.toggle('valid', !!res.ok);
+        inputEl.classList.toggle('invalid', !res.ok);
+      }
+      if (statusEl) statusEl.textContent = res.ok ? '✅' : (res.msg ? '❌' : '');
+      if (msgEl){ msgEl.textContent = res.msg || (res.ok ? 'Correcto' : ''); msgEl.className = 'msg ' + (res.ok ? 'ok' : (res.msg ? 'err' : '')); }
+    }
+    function countLetters(str){ const m=(str||'').match(LETTERS_RGX); return m? m.length : 0; }
+
+    function validateNombre(v0){
+      const v = sanitize.noDigits(sanitize.trim(v0));
+      const ok = countLetters(v) >= 3;
+      return result(ok, "Nombre válido", "Debe tener ≥ 3 letras y no contener números");
+    }
+    function validateApellido(v0){
+      const v = sanitize.noDigits(sanitize.trim(v0));
+      const ok = countLetters(v) >= 3;
+      return result(ok, "Apellido válido", "Debe tener ≥ 3 letras y no contener números");
+    }
+    function validateDNI(v0){
+      const v = sanitize.onlyDigits(v0).slice(0,8);
+      const ok = /^\d{8}$/.test(v);
+      return result(ok, "DNI válido", "Debe tener exactamente 8 dígitos (sin puntos ni espacios)");
+    }
+    function validateCorreo(v0){
+      const v = sanitize.trim(v0);
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+      return result(ok, "Correo válido", "Formato de correo inválido (ej: usuario@dominio.com)");
+    }
+    function validateTelefono(v0){
+      const v = sanitize.onlyDigits(v0).slice(0,10);
+      const ok = /^\d{10}$/.test(v);
+      return result(ok, "Teléfono válido", "Deben ser 10 dígitos (solo números)");
+    }
+    function validateCUIL(v0){
+      const v = sanitize.onlyDigits(v0).slice(0,11);
+      const ok = /^\d{11}$/.test(v);
+      return result(ok, "CUIL válido", "Debe tener 11 dígitos (sin puntos ni espacios)");
+    }
+    function validateCBU(v0){
+      const v = sanitize.onlyDigits(v0).slice(0,22);
+      const ok = /^\d{22}$/.test(v);
+      return result(ok, "CBU válido", "Debe tener 22 dígitos (sin puntos ni espacios)");
+    }
+    function validateCumple(){
+      const sel = document.querySelector('input[name="cumple"]:checked');
+      const ok = !!sel;
+      return result(ok, "Seleccionado", "Este campo es obligatorio");
+    }
+
+    function attachSanitizer(el, type){
+      el.addEventListener('input', () => {
+        const cur = el.value;
+        if (type==='noDigits')  el.value = sanitize.noDigits(cur);
+        if (type==='digits8')   el.value = sanitize.onlyDigits(cur).slice(0,8);
+        if (type==='digits10')  el.value = sanitize.onlyDigits(cur).slice(0,10);
+        if (type==='digits11')  el.value = sanitize.onlyDigits(cur).slice(0,11);
+        if (type==='digits22')  el.value = sanitize.onlyDigits(cur).slice(0,22);
+      });
+    }
+
+    // Refs
+    const nombre   = $('nombre');
+    const apellido = $('apellido');
+    const dni      = $('dni');
+    const correo   = $('correo');
+    const telefono = $('telefono');
+    const cuil     = $('cuil');
+    const cbu      = $('cbu');
+    const btnEnviar= $('btnEnviar');
+
+    const cumpleSi = $('cumple-si');
+    const cumpleNo = $('cumple-no');
+    const grupoEscuelaActual = $('grupoEscuelaActual');
+
+    // Saneadores
+    attachSanitizer(nombre,   'noDigits');
+    attachSanitizer(apellido, 'noDigits');
+    attachSanitizer(dni,      'digits8');
+    attachSanitizer(telefono, 'digits10');
+    attachSanitizer(cuil,     'digits11');
+    attachSanitizer(cbu,      'digits22');
+
+    // Radios: obligatorio + toggle de bloques
+    function onCumpleChange(){
+      const sel = document.querySelector('input[name="cumple"]:checked');
+      setValidity(null, validateCumple(), 'cumple');
+      const showActual = sel && sel.value === 'Si';
+      grupoEscuelaActual.classList.toggle('hidden', !showActual);
+      if (!showActual){
+        document.getElementById("buscarEscuelaActual").value = "";
+        document.getElementById("listaEscuelasActual").innerHTML = "";
+      }
+      updateSubmitState();
+    }
+    [cumpleSi, cumpleNo].forEach(r => r.addEventListener('change', onCumpleChange));
+
+    function validateField(el){
+      switch(el.id){
+        case 'nombre':   setValidity(el, validateNombre(el.value), 'nombre'); break;
+        case 'apellido': setValidity(el, validateApellido(el.value), 'apellido'); break;
+        case 'dni':      setValidity(el, validateDNI(el.value), 'dni'); break;
+        case 'correo':   setValidity(el, validateCorreo(el.value), 'correo'); break;
+        case 'telefono': setValidity(el, validateTelefono(el.value), 'telefono'); break;
+        case 'cuil':     setValidity(el, validateCUIL(el.value), 'cuil'); break;
+        case 'cbu':      setValidity(el, validateCBU(el.value), 'cbu'); break;
+      }
+      updateSubmitState();
+    }
+
+    [nombre, apellido, dni, correo, telefono, cuil, cbu].forEach(el=>{
+      el.addEventListener('input', ()=>validateField(el));
+      el.addEventListener('blur',  ()=>validateField(el));
+    });
+
+    function updateSubmitState(){
+      const fieldsOk =
+        validateNombre(nombre.value).ok &&
+        validateApellido(apellido.value).ok &&
+        validateDNI(dni.value).ok &&
+        validateCorreo(correo.value).ok &&
+        validateTelefono(telefono.value).ok &&
+        validateCUIL(cuil.value).ok &&
+        validateCBU(cbu.value).ok &&
+        validateCumple().ok;
+
+      const filesOk =
+        $('fileDNI').files.length > 0 &&
+        $('fileCuil').files.length > 0 &&
+        $('fileCbu').files.length > 0;
+
+      btnEnviar.disabled = !(fieldsOk && filesOk);
+    }
+    ['fileDNI','fileCuil','fileCbu'].forEach(id=>$(id).addEventListener('change', updateSubmitState));
+
+    //=====================
+    // Búsqueda de escuelas
+    //=====================
+    let escuelasActual = [], escuelasPost = [];
+    const inputActual = document.getElementById("buscarEscuelaActual");
+    const selectActual = document.getElementById("listaEscuelasActual");
+    const inputPost = document.getElementById("buscarEscuelaPost");
+    const selectPost = document.getElementById("listaEscuelasPost");
+
+    function normalizarTexto(str){
+      return String(str||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+    }
+
+    google.script.run.withSuccessHandler(d => { escuelasActual = d || []; actualizarLista('Actual'); }).getEscuelas('Datos Primaria');
+    google.script.run.withSuccessHandler(d => { escuelasPost = d || []; actualizarLista('Post'); }).getEscuelas('Datos para Aplicar');
+
+    inputActual.addEventListener("input", () => actualizarLista('Actual'));
+    inputPost.addEventListener("input", () => actualizarLista('Post'));
+
+    function actualizarLista(tipo){
+      const term  = (tipo==='Actual') ? normalizarTexto(inputActual.value) : normalizarTexto(inputPost.value);
+      const lista = (tipo==='Actual') ? selectActual : selectPost;
+      const datos = (tipo==='Actual') ? escuelasActual : escuelasPost;
+
+      lista.innerHTML = "";
+      if (!term){ datos.slice(0,40).forEach(e=>addOption(lista,e)); return; }
+
+      datos
+        .filter(e => normalizarTexto(`${e.escuela} ${e.localidad} ${e.depto}`).includes(term))
+        .slice(0,80)
+        .forEach(e => addOption(lista,e));
+    }
+
+    function addOption(lista,e){
+      const opt = document.createElement("option");
+      opt.text = `${e.escuela} (${e.localidad} - ${e.depto})`;
+      opt.value = JSON.stringify(e);
+      lista.add(opt);
+    }
+
+    selectActual.addEventListener("change", () => {
+      if (selectActual.selectedIndex !== -1) {
+        inputActual.value = selectActual.options[selectActual.selectedIndex].text.split(' (')[0];
+      }
+    });
+    selectPost.addEventListener("change", () => {
+      if (selectPost.selectedIndex !== -1) {
+        inputPost.value = selectPost.options[selectPost.selectedIndex].text.split(' (')[0];
+      }
+    });
+
+    function resolveSelectionFromInput(tipo){
+      const text  = (tipo==='Actual') ? inputActual.value.trim() : inputPost.value.trim();
+      const datos = (tipo==='Actual') ? escuelasActual : escuelasPost;
+      if (!text) return null;
+      const txtNorm = normalizarTexto(text);
+      const exact = datos.find(e => normalizarTexto(e.escuela) === txtNorm);
+      if (exact) return exact;
+      return datos.find(e => normalizarTexto(e.escuela).includes(txtNorm) || normalizarTexto(`${e.localidad} ${e.depto}`).includes(txtNorm));
+    }
+
+    function uploadFile(file){
+      return new Promise((resolve, reject)=>{
+        if (!file){ resolve(""); return; }
+        const reader = new FileReader();
+        reader.onload = function(evt){
+          const dataURL = evt.target.result;
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(err => reject(err))
+            .subirArchivoDataURL(dataURL, file.name);
+        };
+        reader.onerror = function(e){ reject(e); };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const fileDNI  = document.getElementById("fileDNI");
+    const fileCuil = document.getElementById("fileCuil");
+    const fileCbu  = document.getElementById("fileCbu");
+
+    // ===== Modal helpers =====
+    const modal = $('modalConfirm');
+    const modalClose = $('modalClose');
+    function openModal(){
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden','false');
+      setTimeout(()=>modalClose.focus(), 0);
+      document.body.style.overflow='hidden';
+    }
+    function closeModal(){
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      btnEnviar.focus();
+    }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(!modal.classList.contains('hidden') && e.key === 'Escape') closeModal(); });
+
+    // Estado inicial: ocultar "Escuela actual" hasta elegir "Sí"
+    grupoEscuelaActual.classList.add('hidden');
+
+    btnEnviar.addEventListener("click", async ()=>{
+      // Revalida todo antes de enviar
+      [nombre, apellido, dni, correo, telefono, cuil, cbu].forEach(validateField);
+      setValidity(null, validateCumple(), 'cumple');
+      if (btnEnviar.disabled){ alert("Revisá los campos marcados en rojo antes de enviar."); return; }
+
+      // Radios
+      const sel = document.querySelector('input[name="cumple"]:checked');
+      if (!sel){ alert("Indicá si cumplís funciones frente al aula."); return; }
+      const cumple = sel.value; // 'Si' | 'No'
+
+      // resolver escuelas (condicional)
+      let escActualObj = null, escPostObj = null;
+
+      if (selectPost.selectedIndex !== -1) escPostObj = JSON.parse(selectPost.value);
+      else escPostObj = resolveSelectionFromInput('Post');
+
+      if (!escPostObj){ alert("Seleccioná (o escribí y coincida) la escuela a la que deseás postularte."); return; }
+
+      if (cumple === 'Si'){
+        if (selectActual.selectedIndex !== -1) escActualObj = JSON.parse(selectActual.value);
+        else escActualObj = resolveSelectionFromInput('Actual');
+        if (!escActualObj){
+          alert("Seleccioná (o escribí y coincida) la escuela donde trabajás actualmente.");
+          return;
+        }
+      }
+
+      if (!fileDNI.files[0] || !fileCuil.files[0] || !fileCbu.files[0]){
+        alert("Debés subir la Fotocopia del DNI, la Constancia de CUIL y la Constancia de CBU.");
+        return;
+      }
+
+      btnEnviar.disabled = true; btnEnviar.textContent = "Enviando...";
+
+      try{
+        const [urlDNI, urlCuil, urlCbu] = await Promise.all([
+          uploadFile(fileDNI.files[0]), uploadFile(fileCuil.files[0]), uploadFile(fileCbu.files[0])
+        ]);
+
+        const respuesta = {
+          nombre: sanitize.trim(nombre.value),
+          apellido: sanitize.trim(apellido.value),
+          dni: sanitize.onlyDigits(dni.value),
+          archivoDNI: urlDNI,
+          correo: sanitize.trim(correo.value),
+          telefono: sanitize.onlyDigits(telefono.value),
+          // escuelas (condicional)
+          escuelaActual: escActualObj ? escActualObj.escuela : "",
+          deptoActual: escActualObj ? escActualObj.depto : "",
+          localidadActual: escActualObj ? escActualObj.localidad : "",
+          escuelaPostulacion: escPostObj.escuela,
+          deptoPostulacion: escPostObj.depto,
+          localidadPostulacion: escPostObj.localidad,
+          cuil: sanitize.onlyDigits(cuil.value),
+          archivoCuil: urlCuil,
+          cbu: sanitize.onlyDigits(cbu.value),
+          archivoCbu: urlCbu
+          // ,cumple: cumple  <-- si luego querés guardarlo en la hoja
+        };
+
+        await new Promise((resolve,reject)=>{
+          google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).guardarRespuesta(respuesta);
+        });
+
+        // Reset visual y de formulario
+        document.getElementById("miFormulario").reset();
+        [nombre, apellido, dni, correo, telefono, cuil, cbu].forEach(el=>{
+          el.classList.remove('valid','invalid');
+          const id=el.id; const st=$(`st-${id}`); if(st) st.textContent='';
+          const msg=$(`msg-${id}`); if(msg){ msg.textContent=''; msg.className='msg'; }
+        });
+        if (cumpleSi) cumpleSi.checked=false;
+        if (cumpleNo)  cumpleNo.checked=false;
+        setValidity(null, validateCumple(), 'cumple');
+        document.getElementById("buscarEscuelaActual").value = "";
+        document.getElementById("listaEscuelasActual").innerHTML = "";
+        document.getElementById("buscarEscuelaPost").value = "";
+        document.getElementById("listaEscuelasPost").innerHTML = "";
+        grupoEscuelaActual.classList.add('hidden');
+        updateSubmitState();
+
+        // Mostrar modal
+        openModal();
+
+      }catch(err){
+        console.error(err);
+        alert("Ocurrió un error al enviar. Mirá la consola para más detalles.");
+      }finally{
+        btnEnviar.disabled = false; btnEnviar.textContent = "Enviar formulario";
+      }
+    });
+  </script>
+</body>
+</html>
